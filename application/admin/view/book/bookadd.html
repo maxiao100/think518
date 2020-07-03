@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>图书添加</title>
+    <link rel="shortcut icon" href="/static/admin/img/logo.jpg" type="image/x-icon">
+    <link href="/static/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/admin/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/static/admin/css/weather-icons.min.css" rel="stylesheet" />
+    <link id="beyond-link" href="/static/admin/css/beyond.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!-- Loading Container -->
+<div class="loading-container">
+    <div class="loader"></div>
+</div>
+<!--  /Loading Container -->
+<!-- Navbar -->
+{include file='public/head'}
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+
+        <!-- Page Sidebar -->
+        {include file='public\left'}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-home"></i>&nbsp;图书管理
+                    </li>
+                    <li>
+                        图书添加
+                    </li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget radius-bordered">
+                            <div class="widget-header bordered-bottom bordered-themeprimary">
+                                <span class="widget-caption">图书添加</span>
+                            </div>
+                            <div class="widget-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="isbn" class="col-sm-2 control-label no-padding-right">ISBN</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" name="isbn" placeholder="请输入图书ISBN" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-2 control-label no-padding-right">名称</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" name="name" placeholder="请输入图书名称" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="price" class="col-sm-2 control-label no-padding-right">价格</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" name="price" placeholder="请输入图书价格" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="num" class="col-sm-2 control-label no-padding-right">库存</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="num"  placeholder="请输入图书库存" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="picture" class="col-sm-2 control-label no-padding-right">图像</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" name="picture" placeholder="请输入图书图像地址" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="button" id="add" class="btn btn-primary">添加</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+{include file='public/js'}
+<script>
+    $(function () {
+        $('#add').click(function () {
+            $.ajax({
+                url:"{:url('admin/book/bookadd')}",
+                type:'post',
+                data:$('form').serialize(),
+                datatype:'json',
+                success:function (data) {
+                    if(data.code==1){
+                        layer.msg(data.msg,{
+                            icon:6,
+                            time:1000
+                        },function () {
+                            //jump
+                            location.href=data.url;
+
+                        });
+                    }else{
+                        layer.open({
+                            title:"ERROR",
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+        });
+    })
+
+
+
+</script>
+
+</body>
+<!--  /Body -->
+</html>
